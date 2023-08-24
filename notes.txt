@@ -1,1 +1,14 @@
-first note;s
+# 1. creating project
+create a new folder
+create a new repo in github and follow steps to sync your folder to github
+look at package.json of known repo to find out what packages you want
+npm init
+npm i express
+create .gitignore with node_modules as only line
+cd booker 
+./node_modules/.bin/mocha test/starwars.js
+
+# saving work
+git add .
+git commit -m "title"
+git push origin main
