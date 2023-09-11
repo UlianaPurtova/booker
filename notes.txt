@@ -10,5 +10,6 @@ cd booker
 
 # saving work
 git add .
+git status
 git commit -m "title"
 git push origin main
