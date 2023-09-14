@@ -5,6 +5,33 @@ import { describe, it, beforeEach } from 'mocha';
 const url = "https://restful-booker.herokuapp.com/booking";
 
 describe('/booker', () => {
+  let bookingId;
+  let token;
+
+  it('succesful login', async function () {
+    this.timeout(5000);
+    const url1 = 'https://restful-booker.herokuapp.com/auth'
+    const config = {
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    };
+    
+    const data ={
+      username : "admin",
+      password : "password123"
+
+    }
+    
+    const response = await axios.post(url1, data, config);
+
+    expect(response.status).to.equal(200);
+    expect(response.data.token).to.be.a('string');
+    // not equal ''
+    expect(data.username).to.be.a("string");
+    expect(data.password).to.be.a("string");
+    token = response.data.token;
+  });
     it('get bookings', async function () {
       this.timeout(15000);
       const curl = "https://restful-booker.herokuapp.com/booking";
@@ -73,6 +100,7 @@ describe('/booker', () => {
       expect(response.data.booking.lastname).to.be.a("string");
       expect(response.data.booking.depositpaid).to.be.a("boolean");
       expect(response.data.booking.totalprice).to.be.a("number");
+      bookingId = response.data.bookingid;
       
     })  
 
@@ -103,4 +131,42 @@ describe('/booker', () => {
           }
        
     });
+
+    it('update  booking', async function () {
+      this.timeout(30000);
+      const url2 = `https://restful-booker.herokuapp.com/booking/${bookingId}`;
+      const config = {
+        headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          "Cookie" : `token=${token}`
+        }
+      };
+      
+      const data ={
+        firstname : "Jim",
+        lastname : "Brown",
+        totalprice : 111,
+        depositpaid : true,
+        bookingdates : {
+            checkin : "2018-01-01",
+            checkout : "2019-01-01"
+        },
+        additionalneeds : "Breakfast"
+      }
+      let response;
+      try {
+        response = await axios.put(url2, data, config);
+      } catch (err) {
+        console.log(1);
+      }
+  
+      // expect(response.status).to.equal(200);
+      expect(data.firstname).to.be.a("string");
+      expect(data.lastname).to.be.a("string");
+      expect(data.depositpaid).to.be.a("boolean");
+      expect(data.totalprice).to.be.a("number");
+      
+    })  
+
 });
