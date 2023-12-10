@@ -32,12 +32,7 @@ describe('/booker', () => {
 
   it('get bookings', async function () {
     this.timeout(15000);
-    let response;
-    try {
-      response = await axios.get(url + "?firstname=Uliana&lastname=Purtova");
-    } catch (err) {
-      console.log(1);
-    }
+    const response = await axios.get(url + "?firstname=Uliana&lastname=Purtova");
 
     expect(response.status).to.equal(200);
     expect(response.data.length).to.equal(0);
@@ -157,8 +152,7 @@ describe('/booker', () => {
       }
     };
 
-    let response;
-    response = await axios.delete(url4, config);
+    const response = await axios.delete(url4, config);
     // server returns 201 which is a bug
     expect(response.status).to.equal(200);
 
